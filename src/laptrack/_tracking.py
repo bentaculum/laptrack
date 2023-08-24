@@ -431,6 +431,7 @@ class LapTrack(BaseModel, extra=Extra.forbid):
                 # note: can use KDTree if metric is distance,
                 # but might not be appropriate for general metrics
                 # https://stackoverflow.com/questions/35459306/find-points-within-cutoff-distance-of-other-points-with-scipy # noqa
+
                 if other_frame < 0 or len(coords) <= other_frame:
                     return [], []
                 target_dist_matrix = cdist(
@@ -793,7 +794,7 @@ class LapTrack(BaseModel, extra=Extra.forbid):
             merge_df["parent_track_id"] = merge_df["parent_track_id"] + index_offset
             merge_df["child_track_id"] = merge_df["child_track_id"] + index_offset
 
-        return track_df, split_df, merge_df
+        return track_df, split_df, merge_df, tree
 
 
 def laptrack(coords: Sequence[NumArray], **kwargs) -> nx.Graph:
