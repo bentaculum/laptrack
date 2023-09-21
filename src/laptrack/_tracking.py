@@ -278,6 +278,7 @@ class LapTrack(BaseModel, extra=Extra.forbid):
                 for frame, (coord1, coord2) in enumerate(zip(coords[:-1], coords[1:]))
             ]
             all_edges = sum(ray.get(res), [])
+            ray.shutdown()
         else:
             raise ValueError(
                 f"Unknown parallel backend {self.parallel_backend}. "
@@ -374,6 +375,7 @@ class LapTrack(BaseModel, extra=Extra.forbid):
                     for _, row in segments_df.iterrows()
                 ]
                 segments_df["gap_closing_candidates"] = ray.get(res)
+                ray.shutdown()
             else:
                 raise ValueError(f"Unknown parallel_backend {self.parallel_backend}. ")
         else:
@@ -466,6 +468,7 @@ class LapTrack(BaseModel, extra=Extra.forbid):
                     for _, row in segments_df.iterrows()
                 ]
                 segments_df[f"{prefix}_candidates"] = ray.get(res)
+                ray.shutdown()
             else:
                 raise ValueError(f"Unknown parallel_backend {self.parallel_backend}. ")
         else:
